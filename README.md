@@ -1,1 +1,1 @@
-# stock-exchange-crud
+# Running instructions
