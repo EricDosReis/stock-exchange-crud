@@ -10,12 +10,12 @@ class NegotiationController {
   add(event) {
     event.preventDefault();
 
-    const date = new Date(this._inputDate.value.replace(/-/, ','));
+    const date = DateConverter.toDate(this._inputDate.value);
     const amount = parseInt(this._inputAmount.value);
     const value = parseFloat(this._inputValue.value);
 
     const newNegotiation = new Negotiation(date, amount, value);
 
-    console.log(newNegotiation);
+    console.log(DateConverter.toString(newNegotiation.date));
   }
 }

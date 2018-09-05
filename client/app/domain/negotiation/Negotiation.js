@@ -1,7 +1,7 @@
 class Negotiation {
   constructor(_date, _amount, _value) {
     Object.assign(this, { _amount, _value });
-    this.date_ = new Date(_date.getTime());
+    this._date = new Date(_date.getTime());
     
     Object.freeze(this);
   }
