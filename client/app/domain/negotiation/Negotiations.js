@@ -7,7 +7,12 @@ class Negotiations {
     this._negotiations.push(negotiation);
   }
 
-  getNegotiations() {
+  toArray() {
     return [].concat(this._negotiations);
+  }
+
+  get totalVolume() {
+    return this._negotiations.reduce((total, negotiation) => 
+      total + negotiation.volume, 0);
   }
 }

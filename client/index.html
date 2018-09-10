@@ -41,27 +41,13 @@
         Delete
       </button>
     </div> 
-    
-    <table class="table table-hover table-bordered">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Amount</th>
-          <th>Value</th>
-          <th>Volume</th>
-        </tr>
-      </thead>
-      
-      <tbody id="negotiationsContainer">
-      </tbody>
-      
-      <tfoot>
-      </tfoot>
-    </table>
+  
+    <div id="negotiations"></div>
 
-    <script src="app/converters/DateConverter.js"></script>
+    <script src="app/ui/converters/DateConverter.js"></script>
     <script src="app/domain/negotiation/Negotiations.js"></script>
     <script src="app/domain/negotiation/Negotiation.js"></script>
+    <script src="app/ui/views/NegotiationsView.js"></script>
     <script src="app/controllers/NegotiationController.js"></script>
     <script src="app/app.js"></script>
   </body>
