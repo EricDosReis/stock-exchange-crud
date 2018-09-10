@@ -7,6 +7,9 @@ class NegotiationController {
     this._inputValue = $('#value');
     this._negotiations = new Negotiations();
     this._negotiationsView = new NegotiationsView('#negotiations');
+    this._message = new Message();
+    this._messageView = new MessageView('#message');
+    this._messageView.update(this._message);
     this._negotiationsView.update(this._negotiations);
   }
 
@@ -15,6 +18,8 @@ class NegotiationController {
 
     this._negotiations.add(this._createNegotiation());
     this._negotiationsView.update(this._negotiations);
+    this._message.text = 'Negotiation added successfully';
+    this._messageView.update(this._message);
     this._clearForm();
   }
 
