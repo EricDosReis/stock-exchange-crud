@@ -8,10 +8,12 @@ class DateConverter {
   }
 
   static toDate(dateString) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
-      throw new Error('The format must be aaaa-mm-dd');
+    if (!/\d{2}\/\d{2}\/\d{4}/.test(dateString)) {
+      throw new Error('The format must be dd/mm/aaaa');
     }
 
-    return new Date(...dateString.split('-').map((item, i) => item - i % 2));
+    return new Date(...dateString.split('/')
+      .reverse()
+      .map((item, i) => item - i % 2));
   }
 }
