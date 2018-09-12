@@ -1,14 +1,12 @@
 class Negotiations {
   constructor(trap) {
     this._negotiations = [];
-    this._trap = trap;
 
     Object.freeze(this);
   }
 
   add(negotiation) {
     this._negotiations.push(negotiation);
-    this._trap(this);
   }
 
   toArray() {
@@ -17,7 +15,6 @@ class Negotiations {
 
   remove() {
     this._negotiations.length = 0;
-    this._trap(this);
   }
 
   get totalVolume() {

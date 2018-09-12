@@ -1,13 +1,25 @@
 class NegotiationController {
   constructor() {
     const $ = document.querySelector.bind(document);
+    const that = this;
 
     this._inputDate = $('#date');
     this._inputAmount = $('#amount');
     this._inputValue = $('#value');
-    this._negotiations = new Negotiations(model => {
-      this._negotiationsView.update(model);
+
+    this._negotiations = new Proxy(new Negotiations(), {
+      get(target, prop, receiver) {
+        if (typeof (target[prop]) == typeof (Function) && ['add', 'remove'].includes(prop)) {
+          return function () {
+            target[prop].apply(target, arguments);
+            that._negotiationsView.update(target);
+          }
+        } else {
+          return target[prop];
+        }
+      }
     });
+
     this._negotiationsView = new NegotiationsView('#negotiations');
     this._message = new Message();
     this._messageView = new MessageView('#message');
