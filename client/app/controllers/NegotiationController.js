@@ -1,28 +1,23 @@
 class NegotiationController {
   constructor() {
     const $ = document.querySelector.bind(document);
-    const that = this;
 
     this._inputDate = $('#date');
     this._inputAmount = $('#amount');
     this._inputValue = $('#value');
 
-    this._negotiations = new Proxy(new Negotiations(), {
-      get(target, prop, receiver) {
-        if (typeof (target[prop]) == typeof (Function) && ['add', 'remove'].includes(prop)) {
-          return function () {
-            target[prop].apply(target, arguments);
-            that._negotiationsView.update(target);
-          }
-        } else {
-          return target[prop];
-        }
-      }
-    });
+    this._negotiations = new Bind(
+      new Negotiations(),
+      new NegotiationsView('#negotiations'),
+      'add', 
+      'remove',
+    );
 
-    this._negotiationsView = new NegotiationsView('#negotiations');
-    this._message = new Message();
-    this._messageView = new MessageView('#message');
+    this._message = new Bind(
+      new Message(),
+      new MessageView('#message'),
+      'text',
+    );
   }
 
   add(event) {
@@ -30,14 +25,12 @@ class NegotiationController {
 
     this._negotiations.add(this._createNegotiation());
     this._message.text = 'Negotiation added successfully';
-    this._messageView.update(this._message);
     this._clearForm();
   }
 
   removeAll(event) {
     this._negotiations.remove();
     this._message.text = 'Negotiations removed successfully';
-    this._messageView.update(this._message);
   }
 
   _createNegotiation() {
