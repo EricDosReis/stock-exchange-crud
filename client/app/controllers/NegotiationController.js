@@ -41,6 +41,26 @@ class NegotiationController {
     this._message.text = 'Negotiations removed successfully';
   }
 
+  importNegotiations() {
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'negociacoes/semana');
+
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState == 4) {
+        if (xhr.status == 200) {
+          console.log('Get negotiations');
+          console.log(JSON.parse(xhr.responseText));
+        } else {
+          console.log(xhr.responseText);
+          console.log('Could not get week trading');
+        }
+      }
+    };
+
+    xhr.send();
+  }
+
   _createNegotiation() {
     return new Negotiation(
       DateConverter.toDate(this._inputDate.value),
