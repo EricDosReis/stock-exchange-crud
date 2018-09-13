@@ -21,11 +21,19 @@ class NegotiationController {
   }
 
   add(event) {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    this._negotiations.add(this._createNegotiation());
-    this._message.text = 'Negotiation added successfully';
-    this._clearForm();
+      this._negotiations.add(this._createNegotiation());
+      this._message.text = 'Negotiation added successfully';
+      this._clearForm();
+    } catch (err) {
+      if (err instanceof InvalidDateException) {
+        this._message.text = err.message;
+      } else {
+        this._message.text = 'An unexpected error occurred';
+      }
+    }
   }
 
   removeAll(event) {
