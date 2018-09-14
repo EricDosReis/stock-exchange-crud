@@ -18,6 +18,8 @@ class TradingController {
       new MessageView('#message'),
       'text',
     );
+
+    this._service = new TradingService();
   }
 
   add(event) {
@@ -42,23 +44,16 @@ class TradingController {
   }
 
   importTradings() {
-    const xhr = new XMLHttpRequest();
+    this._service.getCurrentWeekTradings((err, tradings) => {
+      if (err) {
+        this._message.text = err;
 
-    xhr.open('GET', 'trading/currentWeek');
-
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState == 4) {
-        if (xhr.status == 200) {
-          console.log('Get tradings');
-          console.log(JSON.parse(xhr.responseText));
-        } else {
-          console.log(xhr.responseText);
-          console.log('Could not get current week trading');
-        }
+        return;
       }
-    };
 
-    xhr.send();
+      tradings.forEach(trading => this._tradings.add(trading));
+      this._message.text = 'Tradings imported successfully';
+    });
   }
 
   _createTrading() {
