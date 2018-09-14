@@ -44,16 +44,14 @@ class TradingController {
   }
 
   importTradings() {
-    this._service.getCurrentWeekTradings((err, tradings) => {
-      if (err) {
-        this._message.text = err;
-
-        return;
-      }
-
-      tradings.forEach(trading => this._tradings.add(trading));
-      this._message.text = 'Tradings imported successfully';
-    });
+    this._service.getCurrentWeekTradings()
+      .then(
+        tradings => {
+          tradings.forEach(trading => this._tradings.add(trading));
+          this._message.text = 'Tradings imported successfully';
+        },
+        err => this._message.text = 'Tradings imported successfully'
+      );
   }
 
   _createTrading() {

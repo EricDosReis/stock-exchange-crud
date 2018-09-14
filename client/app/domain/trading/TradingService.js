@@ -1,25 +1,22 @@
 class TradingService {
-  getCurrentWeekTradings(callback) {
-    const xhr = new XMLHttpRequest();
-
-    xhr.open('GET', 'trading/currentWeek');
-
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState == 4) {
-        if (xhr.status == 200) {
-          const tradings = JSON
-            .parse(xhr.responseText)
-            .map(object => {
-              return new Trading(new Date(object.date), object.amount, object.value);
-            });
-
-          callback(null, tradings);
-        } else {
-          callback('Could not get tradings from this week');
-        }
-      }
-    };
-
-    xhr.send();
+  constructor() {
+    this._http = new HttpService();
   }
+
+  getCurrentWeekTradings() {
+    return this._http
+      .get('trading/currentWeek')
+      .then(
+        data => {
+          const tradings = data.map(object =>
+            new Trading(new Date(object.date), object.amount, object.value));
+
+          return tradings;
+        },
+        err => {
+          throw new Error('Could not get tradings');
+        }
+      );
+  }
+
 }
