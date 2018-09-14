@@ -1,4 +1,4 @@
-class Negotiation {
+class Trading {
   constructor(_date, _amount, _value) {
     Object.assign(this, { _amount, _value });
     this._date = new Date(_date.getTime());

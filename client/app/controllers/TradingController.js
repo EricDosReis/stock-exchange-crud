@@ -1,4 +1,4 @@
-class NegotiationController {
+class TradingController {
   constructor() {
     const $ = document.querySelector.bind(document);
 
@@ -6,9 +6,9 @@ class NegotiationController {
     this._inputAmount = $('#amount');
     this._inputValue = $('#value');
 
-    this._negotiations = new Bind(
-      new Negotiations(),
-      new NegotiationsView('#negotiations'),
+    this._tradings = new Bind(
+      new Tradings(),
+      new TradingsView('#tradings'),
       'add', 
       'remove',
     );
@@ -24,8 +24,8 @@ class NegotiationController {
     try {
       event.preventDefault();
 
-      this._negotiations.add(this._createNegotiation());
-      this._message.text = 'Negotiation added successfully';
+      this._tradings.add(this._createTrading());
+      this._message.text = 'Trading added successfully';
       this._clearForm();
     } catch (err) {
       if (err instanceof InvalidDateException) {
@@ -37,23 +37,23 @@ class NegotiationController {
   }
 
   removeAll(event) {
-    this._negotiations.remove();
-    this._message.text = 'Negotiations removed successfully';
+    this._tradings.remove();
+    this._message.text = 'Tradings removed successfully';
   }
 
-  importNegotiations() {
+  importTradings() {
     const xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'negociacoes/semana');
+    xhr.open('GET', 'trading/currentWeek');
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState == 4) {
         if (xhr.status == 200) {
-          console.log('Get negotiations');
+          console.log('Get tradings');
           console.log(JSON.parse(xhr.responseText));
         } else {
           console.log(xhr.responseText);
-          console.log('Could not get week trading');
+          console.log('Could not get current week trading');
         }
       }
     };
@@ -61,8 +61,8 @@ class NegotiationController {
     xhr.send();
   }
 
-  _createNegotiation() {
-    return new Negotiation(
+  _createTrading() {
+    return new Trading(
       DateConverter.toDate(this._inputDate.value),
       parseInt(this._inputAmount.value),
       parseFloat(this._inputValue.value),

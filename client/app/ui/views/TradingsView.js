@@ -1,4 +1,4 @@
-class NegotiationsView extends View {
+class TradingsView extends View {
   template(model) {
     return `
       <table class="table table-hover table-bordered">
@@ -12,13 +12,13 @@ class NegotiationsView extends View {
         </thead>
         
         <tbody>
-          ${model.toArray().map(negotiation =>
+          ${model.toArray().map(trading =>
           `
             <tr>
-              <td>${DateConverter.toString(negotiation.date)}</td>
-              <td>${negotiation.amount}</td>
-              <td>${negotiation.value}</td>
-              <td align="right">${negotiation.volume}</td>
+              <td>${DateConverter.toString(trading.date)}</td>
+              <td>${trading.amount}</td>
+              <td>${trading.value}</td>
+              <td align="right">${trading.volume}</td>
             </tr>
           `).join('')}
         </tbody>
