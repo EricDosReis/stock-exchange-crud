@@ -44,24 +44,15 @@ class TradingController {
   }
 
   importTradings() {
-    const tradings = [];
-
-    this._service.getCurrentWeekTradings()
-      .then(currentWeekTradings => {
-        tradings.push(...currentWeekTradings);
-
-        return this._service.getPreviousWeekTradings();
-      })
-      .then(previousWeekTradings => {
-        tradings.push(...previousWeekTradings);
-
-        return this._service.getDelayedWeekTradings();
-      })
-      .then(delayedWeekTradings => {
-        tradings.push(...delayedWeekTradings);
-        tradings.forEach(trading => this._tradings.add(trading));
-
-        this._message.text = 'Tradings imported successfully';
+    this._service.getAllTradings()
+      .then(tradings => {
+        tradings
+          .filter(newTrading => {
+            return !this._tradings.toArray().some((existingTrading) => {
+              return newTrading.equals(existingTrading);
+            })
+          })
+          .forEach(trading => this._tradings.add(trading));
       })
       .catch(err => this._message.text = err);
   }

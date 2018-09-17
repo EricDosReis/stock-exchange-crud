@@ -21,4 +21,8 @@ class Trading {
   get value() {
     return this._value;
   }
+
+  equals(trading) {
+    return JSON.stringify(this) == JSON.stringify(trading);
+  }
 }
