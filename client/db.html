@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Learning IndexedDB</title>
+  </head>
+  <body>
+
+    <script src="app/domain/trading/Trading.js"></script>
+    <script>
+      let connection = null;
+
+      const openRequest = indexedDB.open('jscangaceiro', 2);
+
+      // Create or update an existing database
+      openRequest.onupgradeneeded = e => {
+        connection = e.target.result;
+
+        if (connection.objectStoreNames.contains('tradings')) {
+          connection.deleteObjectStore('tradings');
+        }
+
+        connection.createObjectStore('tradings', { autoIncrement: true });
+      };
+
+      openRequest.onsuccess = e => {
+
+      };
+
+      openRequest.onerror = e => {
+
+      };
+
+      function add() {
+        const trading = new Trading(new Date(), 200, 1);
+
+        const request = connection
+          .transaction(['tradings'], 'readwrite')
+          .objectStore('tradings')
+          .add(trading);
+        
+        request.onsuccess = e => 
+          console.log('Trading saved successfully');
+
+        request.onerror = e => 
+          console.log('Could not possible save the trading');
+      }
+
+      function listAll() {
+        const tradings = [];
+
+        const cursor = connection
+          .transaction(['tradings'], 'readwrite')
+          .objectStore('tradings')
+          .openCursor();
+
+        cursor.onsuccess = e => {
+          const data = e.target.result;
+
+          if (data) {
+            const trading = new Trading(
+              data.value._date,
+              data.value._amount,
+              data.value._value,
+            );
+
+            tradings.push(trading);
+            data.continue();
+          } else {
+            console.log(tradings);
+          }
+        };
+
+        cursor.onerror = e => 
+          console.log(`Error: ${e.target.error.name}`);
+      }
+    </script>
+  </body>
+</html>
