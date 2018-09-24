@@ -26,9 +26,17 @@ class TradingController {
     try {
       event.preventDefault();
 
-      this._tradings.add(this._createTrading());
-      this._message.text = 'Trading added successfully';
-      this._clearForm();
+      const trading = this._createTrading();
+
+      DaoFactory
+        .getTradingDao()
+        .then(dao => dao.add(trading))
+        .then(() => {
+          this._tradings.add(trading);
+          this._message.text = 'Trading added successfully';
+          this._clearForm();
+        })
+        .catch(err => this._message.text = err);
     } catch (err) {
       if (err instanceof InvalidDateException) {
         this._message.text = err.message;

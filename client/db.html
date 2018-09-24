@@ -32,8 +32,6 @@
       };
 
       function add() {
-        const trading = new Trading(new Date(), 200, 1);
-
         const request = connection
           .transaction(['tradings'], 'readwrite')
           .objectStore('tradings')
