@@ -1,24 +1,33 @@
-class Tradings {
-  constructor(trap) {
-    this._tradings = [];
+System.register([], function (_export, _context) {
+  "use strict";
 
-    Object.freeze(this);
-  }
+  return {
+    setters: [],
+    execute: function () {
+      class Tradings {
+        constructor(trap) {
+          this._tradings = [];
 
-  add(trading) {
-    this._tradings.push(trading);
-  }
+          Object.freeze(this);
+        }
 
-  toArray() {
-    return [].concat(this._tradings);
-  }
+        add(trading) {
+          this._tradings.push(trading);
+        }
 
-  clear() {
-    this._tradings.length = 0;
-  }
+        toArray() {
+          return [].concat(this._tradings);
+        }
 
-  get totalVolume() {
-    return this._tradings.reduce((total, trading) => 
-      total + trading.volume, 0);
-  }
-}
+        clear() {
+          this._tradings.length = 0;
+        }
+
+        get totalVolume() {
+          return this._tradings.reduce((total, trading) => total + trading.volume, 0);
+        }
+      }
+    }
+  };
+});
+//# sourceMappingURL=Tradings.js.map

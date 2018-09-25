@@ -1,17 +1,9 @@
-System.register(['./View.js', './converters/DateConverter.js'], function (_export, _context) {
-  "use strict";
+import { View } from './View.js';
+import { DateConverter } from './converters/DateConverter.js';
 
-  var View, DateConverter;
-  return {
-    setters: [function (_ViewJs) {
-      View = _ViewJs.View;
-    }, function (_convertersDateConverterJs) {
-      DateConverter = _convertersDateConverterJs.DateConverter;
-    }],
-    execute: function () {
-      class TradingsView extends View {
-        template(model) {
-          return `
+export class TradingsView extends View {
+  template(model) {
+    return `
       <table class="table table-hover table-bordered">
         <thead>
           <tr>
@@ -23,7 +15,8 @@ System.register(['./View.js', './converters/DateConverter.js'], function (_expor
         </thead>
         
         <tbody>
-          ${model.toArray().map(trading => `
+          ${model.toArray().map(trading =>
+          `
             <tr>
               <td>${DateConverter.toString(trading.date)}</td>
               <td>${trading.amount}</td>
@@ -39,12 +32,6 @@ System.register(['./View.js', './converters/DateConverter.js'], function (_expor
           </tr>
         </tfoot>
       </table>
-    `;
-        }
-      }
-
-      _export('TradingsView', TradingsView);
-    }
-  };
-});
-//# sourceMappingURL=TradingsView.js.map
+    `
+  }
+}
