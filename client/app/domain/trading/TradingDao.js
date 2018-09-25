@@ -52,4 +52,20 @@ class TradingDao {
       }
     });
   }
+
+  removeAll() {
+    return new Promise((resolve, reject) => {
+      const request = this._connection
+        .transaction([this._store], 'readwrite')
+        .objectStore(this._store)
+        .clear();
+
+      request.onsuccess = e => resolve();
+
+      request.onerror = e => {
+        console.error(e.target.error);
+        reject('Could not possible remove all tradings');
+      };
+    });
+  }
 }

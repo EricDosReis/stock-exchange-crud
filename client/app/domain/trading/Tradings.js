@@ -13,7 +13,7 @@ class Tradings {
     return [].concat(this._tradings);
   }
 
-  remove() {
+  clear() {
     this._tradings.length = 0;
   }
 

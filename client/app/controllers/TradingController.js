@@ -10,7 +10,7 @@ class TradingController {
       new Tradings(),
       new TradingsView('#tradings'),
       'add', 
-      'remove',
+      'clear',
     );
 
     this._message = new Bind(
@@ -20,6 +20,7 @@ class TradingController {
     );
 
     this._service = new TradingService();
+    this._init();
   }
 
   add(event) {
@@ -28,8 +29,7 @@ class TradingController {
 
       const trading = this._createTrading();
 
-      DaoFactory
-        .getTradingDao()
+      getTradingDao()
         .then(dao => dao.add(trading))
         .then(() => {
           this._tradings.add(trading);
@@ -47,8 +47,13 @@ class TradingController {
   }
 
   removeAll(event) {
-    this._tradings.remove();
-    this._message.text = 'Tradings removed successfully';
+    getTradingDao()
+      .then(dao => dao.removeAll())
+      .then(() => {
+        this._tradings.clear();
+        this._message.text = 'Tradings removed successfully';
+      })
+      .catch(err => this._message.text = err);
   }
 
   importTradings() {
@@ -62,6 +67,15 @@ class TradingController {
           })
           .forEach(trading => this._tradings.add(trading));
       })
+      .catch(err => this._message.text = err);
+  }
+
+  _init() {
+    getTradingDao()
+      .then(dao => dao.listAll())
+      .then(tradings =>
+        tradings.forEach(trading =>
+          this._tradings.add(trading)))
       .catch(err => this._message.text = err);
   }
 
