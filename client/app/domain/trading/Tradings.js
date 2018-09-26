@@ -27,6 +27,8 @@ System.register([], function (_export, _context) {
           return this._tradings.reduce((total, trading) => total + trading.volume, 0);
         }
       }
+
+      _export("Tradings", Tradings);
     }
   };
 });

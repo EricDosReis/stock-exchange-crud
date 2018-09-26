@@ -1,26 +1,21 @@
-System.register(['../domain/trading/Tradings.js', '../ui/views/TradingsView.js', '../ui/models/Message.js', '../ui/views/MessageView.js', '../domain/trading/TradingService.js', '../ui/converters/InvalidDateException.js', '../domain/Trading/Trading.js', '../util/Bind.js', '../ui/converters/DateConverter.js'], function (_export, _context) {
+System.register(['../domain/index.js', '../ui/index.js', '../util/index.js'], function (_export, _context) {
   "use strict";
 
-  var Tradings, TradingsView, Message, MessageView, TradingService, InvalidDateException, Trading, Bind, DateConverter;
+  var Tradings, TradingService, Trading, TradingsView, MessageView, Message, InvalidDateException, DateConverter, getTradingDao, Bind;
   return {
-    setters: [function (_domainTradingTradingsJs) {
-      Tradings = _domainTradingTradingsJs.Tradings;
-    }, function (_uiViewsTradingsViewJs) {
-      TradingsView = _uiViewsTradingsViewJs.TradingsView;
-    }, function (_uiModelsMessageJs) {
-      Message = _uiModelsMessageJs.Message;
-    }, function (_uiViewsMessageViewJs) {
-      MessageView = _uiViewsMessageViewJs.MessageView;
-    }, function (_domainTradingTradingServiceJs) {
-      TradingService = _domainTradingTradingServiceJs.TradingService;
-    }, function (_uiConvertersInvalidDateExceptionJs) {
-      InvalidDateException = _uiConvertersInvalidDateExceptionJs.InvalidDateException;
-    }, function (_domainTradingTradingJs) {
-      Trading = _domainTradingTradingJs.Trading;
-    }, function (_utilBindJs) {
-      Bind = _utilBindJs.Bind;
-    }, function (_uiConvertersDateConverterJs) {
-      DateConverter = _uiConvertersDateConverterJs.DateConverter;
+    setters: [function (_domainIndexJs) {
+      Tradings = _domainIndexJs.Tradings;
+      TradingService = _domainIndexJs.TradingService;
+      Trading = _domainIndexJs.Trading;
+    }, function (_uiIndexJs) {
+      TradingsView = _uiIndexJs.TradingsView;
+      MessageView = _uiIndexJs.MessageView;
+      Message = _uiIndexJs.Message;
+      InvalidDateException = _uiIndexJs.InvalidDateException;
+      DateConverter = _uiIndexJs.DateConverter;
+    }, function (_utilIndexJs) {
+      getTradingDao = _utilIndexJs.getTradingDao;
+      Bind = _utilIndexJs.Bind;
     }],
     execute: function () {
       class TradingController {

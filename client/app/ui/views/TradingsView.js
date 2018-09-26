@@ -1,4 +1,4 @@
-System.register(['./View.js', './converters/DateConverter.js'], function (_export, _context) {
+System.register(['./View.js', '../converters/DateConverter.js'], function (_export, _context) {
   "use strict";
 
   var View, DateConverter;

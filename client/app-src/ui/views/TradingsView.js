@@ -1,5 +1,5 @@
 import { View } from './View.js';
-import { DateConverter } from './converters/DateConverter.js';
+import { DateConverter } from '../converters/DateConverter.js';
 
 export class TradingsView extends View {
   template(model) {
