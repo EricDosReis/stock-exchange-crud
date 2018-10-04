@@ -72,4 +72,5 @@ typings/
 # Serverless directories
 .serverless
 
+client/package-lock.json
 client/app/

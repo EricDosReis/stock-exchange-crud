@@ -1,9 +1,11 @@
-System.register(['./controllers/TradingController.js'], function (_export, _context) {
+System.register(['./util/index.js', './controllers/TradingController.js'], function (_export, _context) {
   "use strict";
 
-  var TradingController;
+  var debounce, TradingController;
   return {
-    setters: [function (_controllersTradingControllerJs) {
+    setters: [function (_utilIndexJs) {
+      debounce = _utilIndexJs.debounce;
+    }, function (_controllersTradingControllerJs) {
       TradingController = _controllersTradingControllerJs.TradingController;
     }],
     execute: function () {
@@ -15,7 +17,7 @@ System.register(['./controllers/TradingController.js'], function (_export, _cont
 
       $('#btn-remove-all').addEventListener('click', controller.removeAll.bind(controller));
 
-      $('#btn-import').addEventListener('click', controller.importTradings.bind(controller));
+      $('#btn-import').addEventListener('click', debounce(() => controller.importTradings(), 1000));
     }
   };
 });

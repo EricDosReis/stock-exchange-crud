@@ -5,7 +5,7 @@ System.register([], function (_export, _context) {
     setters: [],
     execute: function () {
       class Tradings {
-        constructor(trap) {
+        constructor() {
           this._tradings = [];
 
           Object.freeze(this);

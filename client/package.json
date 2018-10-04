@@ -23,6 +23,7 @@
     "systemjs": "^0.20.12"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1"
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1"
   }
 }

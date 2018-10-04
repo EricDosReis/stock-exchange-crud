@@ -1,7 +1,37 @@
 System.register(['../domain/index.js', '../ui/index.js', '../util/index.js'], function (_export, _context) {
   "use strict";
 
-  var Tradings, TradingService, Trading, TradingsView, MessageView, Message, InvalidDateException, DateConverter, getTradingDao, Bind;
+  var Tradings, TradingService, Trading, TradingsView, MessageView, Message, InvalidDateException, DateConverter, getTradingDao, Bind, getExceptionMessage;
+
+  function _asyncToGenerator(fn) {
+    return function () {
+      var gen = fn.apply(this, arguments);
+      return new Promise(function (resolve, reject) {
+        function step(key, arg) {
+          try {
+            var info = gen[key](arg);
+            var value = info.value;
+          } catch (error) {
+            reject(error);
+            return;
+          }
+
+          if (info.done) {
+            resolve(value);
+          } else {
+            return Promise.resolve(value).then(function (value) {
+              step("next", value);
+            }, function (err) {
+              step("throw", err);
+            });
+          }
+        }
+
+        return step("next");
+      });
+    };
+  }
+
   return {
     setters: [function (_domainIndexJs) {
       Tradings = _domainIndexJs.Tradings;
@@ -16,6 +46,7 @@ System.register(['../domain/index.js', '../ui/index.js', '../util/index.js'], fu
     }, function (_utilIndexJs) {
       getTradingDao = _utilIndexJs.getTradingDao;
       Bind = _utilIndexJs.Bind;
+      getExceptionMessage = _utilIndexJs.getExceptionMessage;
     }],
     execute: function () {
       class TradingController {
@@ -35,44 +66,77 @@ System.register(['../domain/index.js', '../ui/index.js', '../util/index.js'], fu
         }
 
         add(event) {
-          try {
-            event.preventDefault();
+          var _this = this;
 
-            const trading = this._createTrading();
+          return _asyncToGenerator(function* () {
+            try {
+              event.preventDefault();
 
-            getTradingDao().then(dao => dao.add(trading)).then(() => {
-              this._tradings.add(trading);
-              this._message.text = 'Trading added successfully';
-              this._clearForm();
-            }).catch(err => this._message.text = err);
-          } catch (err) {
-            if (err instanceof InvalidDateException) {
-              this._message.text = err.message;
-            } else {
-              this._message.text = 'An unexpected error occurred';
+              const trading = _this._createTrading();
+
+              const dao = yield getTradingDao();
+              yield dao.add(trading);
+
+              _this._tradings.add(trading);
+              _this._message.text = 'Trading added successfully';
+              _this._clearForm();
+            } catch (err) {
+              _this._message.text = getExceptionMessage(err);
             }
-          }
+          })();
         }
 
-        removeAll(event) {
-          getTradingDao().then(dao => dao.removeAll()).then(() => {
-            this._tradings.clear();
-            this._message.text = 'Tradings removed successfully';
-          }).catch(err => this._message.text = err);
+        removeAll() {
+          var _this2 = this;
+
+          return _asyncToGenerator(function* () {
+            try {
+              const dao = yield getTradingDao();
+              yield dao.removeAll();
+
+              _this2._tradings.clear();
+              _this2._message.text = 'Tradings removed successfully';
+            } catch (err) {
+              _this2._message.text = getExceptionMessage(err);
+            }
+          })();
         }
 
         importTradings() {
-          this._service.getAllTradings().then(tradings => {
-            tradings.filter(newTrading => {
-              return !this._tradings.toArray().some(existingTrading => {
-                return newTrading.equals(existingTrading);
+          var _this3 = this;
+
+          return _asyncToGenerator(function* () {
+            try {
+              const tradings = yield _this3._service.getAllTradings();
+
+              tradings.filter(function (newTrading) {
+                return !_this3._tradings.toArray().some(function (existingTrading) {
+                  return newTrading.equals(existingTrading);
+                });
+              }).forEach(function (trading) {
+                return _this3._tradings.add(trading);
               });
-            }).forEach(trading => this._tradings.add(trading));
-          }).catch(err => this._message.text = err);
+            } catch (err) {
+              _this3._message.text = getExceptionMessage(err);
+            }
+          })();
         }
 
         _init() {
-          getTradingDao().then(dao => dao.listAll()).then(tradings => tradings.forEach(trading => this._tradings.add(trading))).catch(err => this._message.text = err);
+          var _this4 = this;
+
+          return _asyncToGenerator(function* () {
+            try {
+              const dao = yield getTradingDao();
+              const tradings = yield dao.listAll();
+
+              tradings.forEach(function (trading) {
+                return _this4._tradings.add(trading);
+              });
+            } catch (err) {
+              _this4._message.text = getExceptionMessage(err);
+            }
+          })();
         }
 
         _createTrading() {

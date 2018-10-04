@@ -1,4 +1,5 @@
 import { HttpService } from '../../util/HttpService.js';
+import { ApplicationException } from '../../util/ApplicationException.js';
 import { Trading } from './Trading.js';
 
 export class TradingService {
@@ -17,7 +18,7 @@ export class TradingService {
           return tradings;
         },
         err => {
-          throw new Error('Could not get tradings from the current week');
+          throw new ApplicationException('Could not get tradings from the current week');
         }
       );
   }
@@ -31,7 +32,7 @@ export class TradingService {
             new Trading(new Date(object.date), object.amount, object.value))
         ,
         err => {
-          throw new Error('Could not get tradings from the previous week');
+          throw new ApplicationException('Could not get tradings from the previous week');
         }
       );
   }
@@ -45,24 +46,25 @@ export class TradingService {
             new Trading(new Date(object.date), object.amount, object.value))
         ,
         err => {
-          throw new Error('Could not get tradings from the delayed week');
+          throw new ApplicationException('Could not get tradings from the delayed week');
         }
       );
   }
 
-  getAllTradings() {
-    return Promise.all([
-      this.getCurrentWeekTradings(),
-      this.getPreviousWeekTradings(),
-      this.getDelayedWeekTradings(),
-    ])
-    .then(periodTradings => periodTradings
-      .reduce((newArray, item) => newArray.concat(item), [])
-      .sort((a, b) => b.date.getTime() - a.date.getTime())
-    )
-    .catch(err => {
-      throw new Error('Could not get tradings')
-    });
+  async getAllTradings() {
+    try {
+      let tradingsFromPeriod = await Promise.all([
+        this.getCurrentWeekTradings(),
+        this.getPreviousWeekTradings(),
+        this.getDelayedWeekTradings(),
+      ]);
+
+      return tradingsFromPeriod
+        .reduce((newArray, item) => newArray.concat(item), [])
+        .sort((a, b) => b.date.getTime() - a.date.getTime());
+    } catch (err) {
+      throw new ApplicationException('Could not get tradings');
+    }
   }
 
 }

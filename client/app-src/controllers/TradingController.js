@@ -1,6 +1,6 @@
 import { Tradings, TradingService, Trading } from '../domain/index.js';
 import { TradingsView, MessageView, Message, InvalidDateException, DateConverter } from '../ui/index.js';
-import { getTradingDao, Bind } from '../util/index.js';
+import { getTradingDao, Bind, getExceptionMessage } from '../util/index.js';
 
 export class TradingController {
   constructor() {
@@ -27,60 +27,60 @@ export class TradingController {
     this._init();
   }
 
-  add(event) {
+  async add(event) {
     try {
       event.preventDefault();
 
       const trading = this._createTrading();
 
-      getTradingDao()
-        .then(dao => dao.add(trading))
-        .then(() => {
-          this._tradings.add(trading);
-          this._message.text = 'Trading added successfully';
-          this._clearForm();
-        })
-        .catch(err => this._message.text = err);
+      const dao = await getTradingDao();
+      await dao.add(trading);
+
+      this._tradings.add(trading);
+      this._message.text = 'Trading added successfully';
+      this._clearForm();
     } catch (err) {
-      if (err instanceof InvalidDateException) {
-        this._message.text = err.message;
-      } else {
-        this._message.text = 'An unexpected error occurred';
-      }
+      this._message.text = getExceptionMessage(err);
     }
   }
 
-  removeAll(event) {
-    getTradingDao()
-      .then(dao => dao.removeAll())
-      .then(() => {
-        this._tradings.clear();
-        this._message.text = 'Tradings removed successfully';
-      })
-      .catch(err => this._message.text = err);
+  async removeAll() {
+    try {
+      const dao = await getTradingDao();
+      await dao.removeAll();
+
+      this._tradings.clear();
+      this._message.text = 'Tradings removed successfully';
+    } catch (err) {
+      this._message.text = getExceptionMessage(err);
+    }
   }
 
-  importTradings() {
-    this._service.getAllTradings()
-      .then(tradings => {
-        tradings
-          .filter(newTrading => {
-            return !this._tradings.toArray().some((existingTrading) => {
-              return newTrading.equals(existingTrading);
-            })
+  async importTradings() {
+    try {
+      const tradings = await this._service.getAllTradings();
+
+      tradings
+        .filter(newTrading => {
+          return !this._tradings.toArray().some((existingTrading) => {
+            return newTrading.equals(existingTrading);
           })
-          .forEach(trading => this._tradings.add(trading));
-      })
-      .catch(err => this._message.text = err);
+        })
+        .forEach(trading => this._tradings.add(trading));
+    } catch (err) {
+      this._message.text = getExceptionMessage(err);
+    }
   }
 
-  _init() {
-    getTradingDao()
-      .then(dao => dao.listAll())
-      .then(tradings =>
-        tradings.forEach(trading =>
-          this._tradings.add(trading)))
-      .catch(err => this._message.text = err);
+  async _init() {
+    try {
+      const dao = await getTradingDao();
+      const tradings = await dao.listAll();
+
+      tradings.forEach(trading => this._tradings.add(trading))
+    } catch (err) {
+      this._message.text = getExceptionMessage(err);
+    }
   }
 
   _createTrading() {

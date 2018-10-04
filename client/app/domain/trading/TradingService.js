@@ -1,10 +1,42 @@
-System.register(['../../util/HttpService.js', './Trading.js'], function (_export, _context) {
+System.register(['../../util/HttpService.js', '../../util/ApplicationException.js', './Trading.js'], function (_export, _context) {
   "use strict";
 
-  var HttpService, Trading;
+  var HttpService, ApplicationException, Trading;
+
+  function _asyncToGenerator(fn) {
+    return function () {
+      var gen = fn.apply(this, arguments);
+      return new Promise(function (resolve, reject) {
+        function step(key, arg) {
+          try {
+            var info = gen[key](arg);
+            var value = info.value;
+          } catch (error) {
+            reject(error);
+            return;
+          }
+
+          if (info.done) {
+            resolve(value);
+          } else {
+            return Promise.resolve(value).then(function (value) {
+              step("next", value);
+            }, function (err) {
+              step("throw", err);
+            });
+          }
+        }
+
+        return step("next");
+      });
+    };
+  }
+
   return {
     setters: [function (_utilHttpServiceJs) {
       HttpService = _utilHttpServiceJs.HttpService;
+    }, function (_utilApplicationExceptionJs) {
+      ApplicationException = _utilApplicationExceptionJs.ApplicationException;
     }, function (_TradingJs) {
       Trading = _TradingJs.Trading;
     }],
@@ -20,26 +52,38 @@ System.register(['../../util/HttpService.js', './Trading.js'], function (_export
 
             return tradings;
           }, err => {
-            throw new Error('Could not get tradings from the current week');
+            throw new ApplicationException('Could not get tradings from the current week');
           });
         }
 
         getPreviousWeekTradings() {
           return this._http.get('trading/previousWeek').then(data => data.map(object => new Trading(new Date(object.date), object.amount, object.value)), err => {
-            throw new Error('Could not get tradings from the previous week');
+            throw new ApplicationException('Could not get tradings from the previous week');
           });
         }
 
         getDelayedWeekTradings() {
           return this._http.get('trading/delayedWeek').then(data => data.map(object => new Trading(new Date(object.date), object.amount, object.value)), err => {
-            throw new Error('Could not get tradings from the delayed week');
+            throw new ApplicationException('Could not get tradings from the delayed week');
           });
         }
 
         getAllTradings() {
-          return Promise.all([this.getCurrentWeekTradings(), this.getPreviousWeekTradings(), this.getDelayedWeekTradings()]).then(periodTradings => periodTradings.reduce((newArray, item) => newArray.concat(item), []).sort((a, b) => b.date.getTime() - a.date.getTime())).catch(err => {
-            throw new Error('Could not get tradings');
-          });
+          var _this = this;
+
+          return _asyncToGenerator(function* () {
+            try {
+              let tradingsFromPeriod = yield Promise.all([_this.getCurrentWeekTradings(), _this.getPreviousWeekTradings(), _this.getDelayedWeekTradings()]);
+
+              return tradingsFromPeriod.reduce(function (newArray, item) {
+                return newArray.concat(item);
+              }, []).sort(function (a, b) {
+                return b.date.getTime() - a.date.getTime();
+              });
+            } catch (err) {
+              throw new ApplicationException('Could not get tradings');
+            }
+          })();
         }
 
       }

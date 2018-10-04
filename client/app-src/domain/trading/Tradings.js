@@ -1,5 +1,5 @@
 export class Tradings {
-  constructor(trap) {
+  constructor() {
     this._tradings = [];
 
     Object.freeze(this);
