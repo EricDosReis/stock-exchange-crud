@@ -4,7 +4,7 @@ System.register([], function (_export, _context) {
   return {
     setters: [],
     execute: function () {
-      class ProxyFactory {
+      let ProxyFactory = class ProxyFactory {
         constructor() {
           throw new Error('ProxyFactory class cannot be instantiated');
         }
@@ -37,7 +37,7 @@ System.register([], function (_export, _context) {
         static isFunction(prop) {
           return typeof prop == typeof Function;
         }
-      }
+      };
 
       _export('ProxyFactory', ProxyFactory);
     }

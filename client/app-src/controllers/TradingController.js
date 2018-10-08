@@ -1,14 +1,13 @@
 import { Tradings, TradingService, Trading } from '../domain/index.js';
-import { TradingsView, MessageView, Message, InvalidDateException, DateConverter } from '../ui/index.js';
-import { getTradingDao, Bind, getExceptionMessage } from '../util/index.js';
+import { TradingsView, MessageView, Message, DateConverter } from '../ui/index.js';
+import { getTradingDao, Bind, getExceptionMessage, debounce, controller } from '../util/index.js';
 
+@controller('#date', '#amount', '#value')
 export class TradingController {
-  constructor() {
+  constructor(_inputDate, _inputAmount, _inputValue) {
     const $ = document.querySelector.bind(document);
 
-    this._inputDate = $('#date');
-    this._inputAmount = $('#amount');
-    this._inputValue = $('#value');
+    Object.assign(this, { _inputDate, _inputAmount, _inputValue });
 
     this._tradings = new Bind(
       new Tradings(),
@@ -27,6 +26,7 @@ export class TradingController {
     this._init();
   }
 
+  @debounce()
   async add(event) {
     try {
       event.preventDefault();
@@ -56,6 +56,7 @@ export class TradingController {
     }
   }
 
+  @debounce(1500)
   async importTradings() {
     try {
       const tradings = await this._service.getAllTradings();
@@ -77,7 +78,7 @@ export class TradingController {
       const dao = await getTradingDao();
       const tradings = await dao.listAll();
 
-      tradings.forEach(trading => this._tradings.add(trading))
+      tradings.forEach(trading => this._tradings.add(trading));
     } catch (err) {
       this._message.text = getExceptionMessage(err);
     }

@@ -1,4 +1,3 @@
-import { debounce } from './util/index.js';
 import { TradingController } from './controllers/TradingController.js';
 
 const controller = new TradingController();
@@ -11,5 +10,4 @@ $('#btn-remove-all')
   .addEventListener('click', controller.removeAll.bind(controller));
 
 $('#btn-import')
-  .addEventListener('click', debounce(() =>
-    controller.importTradings(), 1000));
+  .addEventListener('click', controller.importTradings.bind(controller));

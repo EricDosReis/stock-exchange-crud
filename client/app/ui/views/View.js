@@ -4,7 +4,7 @@ System.register([], function (_export, _context) {
   return {
     setters: [],
     execute: function () {
-      class View {
+      let View = class View {
         constructor(selector) {
           this._element = document.querySelector(selector);
         }
@@ -16,7 +16,7 @@ System.register([], function (_export, _context) {
         update(model) {
           this._element.innerHTML = this.template(model);
         }
-      }
+      };
 
       _export("View", View);
     }

@@ -2,36 +2,6 @@ System.register(['../../util/HttpService.js', '../../util/ApplicationException.j
   "use strict";
 
   var HttpService, ApplicationException, Trading;
-
-  function _asyncToGenerator(fn) {
-    return function () {
-      var gen = fn.apply(this, arguments);
-      return new Promise(function (resolve, reject) {
-        function step(key, arg) {
-          try {
-            var info = gen[key](arg);
-            var value = info.value;
-          } catch (error) {
-            reject(error);
-            return;
-          }
-
-          if (info.done) {
-            resolve(value);
-          } else {
-            return Promise.resolve(value).then(function (value) {
-              step("next", value);
-            }, function (err) {
-              step("throw", err);
-            });
-          }
-        }
-
-        return step("next");
-      });
-    };
-  }
-
   return {
     setters: [function (_utilHttpServiceJs) {
       HttpService = _utilHttpServiceJs.HttpService;
@@ -41,7 +11,36 @@ System.register(['../../util/HttpService.js', '../../util/ApplicationException.j
       Trading = _TradingJs.Trading;
     }],
     execute: function () {
-      class TradingService {
+      function _asyncToGenerator(fn) {
+        return function () {
+          var gen = fn.apply(this, arguments);
+          return new Promise(function (resolve, reject) {
+            function step(key, arg) {
+              try {
+                var info = gen[key](arg);
+                var value = info.value;
+              } catch (error) {
+                reject(error);
+                return;
+              }
+
+              if (info.done) {
+                resolve(value);
+              } else {
+                return Promise.resolve(value).then(function (value) {
+                  step("next", value);
+                }, function (err) {
+                  step("throw", err);
+                });
+              }
+            }
+
+            return step("next");
+          });
+        };
+      }
+
+      let TradingService = class TradingService {
         constructor() {
           this._http = new HttpService();
         }
@@ -86,7 +85,7 @@ System.register(['../../util/HttpService.js', '../../util/ApplicationException.j
           })();
         }
 
-      }
+      };
 
       _export('TradingService', TradingService);
     }

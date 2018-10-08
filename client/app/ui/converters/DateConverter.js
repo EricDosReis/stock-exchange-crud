@@ -7,7 +7,7 @@ System.register(['./InvalidDateException.js'], function (_export, _context) {
       InvalidDateException = _InvalidDateExceptionJs.InvalidDateException;
     }],
     execute: function () {
-      class DateConverter {
+      let DateConverter = class DateConverter {
         constructor() {
           throw new Error('DateConverter class cannot be instantiated');
         }
@@ -23,7 +23,7 @@ System.register(['./InvalidDateException.js'], function (_export, _context) {
 
           return new Date(...dateString.split('/').reverse().map((item, i) => item - i % 2));
         }
-      }
+      };
 
       _export('DateConverter', DateConverter);
     }
