@@ -1,5 +1,11 @@
+import { required } from '../../util/index.js';
+
 export class Trading {
-  constructor(_date, _amount, _value) {
+  constructor(
+    _date = required('date'),
+    _amount = required('amount'),
+    _value = required('value'),
+  ) {
     Object.assign(this, { _amount, _value });
     this._date = new Date(_date.getTime());
     

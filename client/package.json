@@ -20,6 +20,7 @@
   "homepage": "https://github.com/EricDosReis/stock-exchange-crud#readme",
   "dependencies": {
     "babel-plugin-transform-es2015-modules-systemjs": "^6.24.1",
+    "reflect-metadata": "^0.1.10",
     "systemjs": "^0.20.12"
   },
   "devDependencies": {

@@ -1,6 +1,20 @@
 import { Tradings, TradingService, Trading } from '../domain/index.js';
-import { TradingsView, MessageView, Message, DateConverter } from '../ui/index.js';
-import { getTradingDao, Bind, getExceptionMessage, debounce, controller } from '../util/index.js';
+
+import { 
+  TradingsView, 
+  MessageView, 
+  Message, 
+  DateConverter 
+} from '../ui/index.js';
+
+import { 
+  getTradingDao, 
+  Bind, 
+  getExceptionMessage, 
+  debounce, 
+  controller, 
+  bindEvent,
+} from '../util/index.js';
 
 @controller('#date', '#amount', '#value')
 export class TradingController {
@@ -26,6 +40,7 @@ export class TradingController {
     this._init();
   }
 
+  @bindEvent('submit', '.form')
   @debounce()
   async add(event) {
     try {
@@ -44,6 +59,7 @@ export class TradingController {
     }
   }
 
+  @bindEvent('click', '#btn-remove-all')
   async removeAll() {
     try {
       const dao = await getTradingDao();
@@ -56,6 +72,7 @@ export class TradingController {
     }
   }
 
+  @bindEvent('click', '#btn-import')
   @debounce(1500)
   async importTradings() {
     try {
