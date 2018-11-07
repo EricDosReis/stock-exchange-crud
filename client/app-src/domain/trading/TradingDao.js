@@ -1,4 +1,4 @@
-import { Trading } from './Trading.js';
+import { Trading } from './Trading';
 
 export class TradingDao {
   constructor(connection) {

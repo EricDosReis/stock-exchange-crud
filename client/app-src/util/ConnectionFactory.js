@@ -13,7 +13,7 @@ export class ConnectionFactory {
         return resolve(connection);
       }
 
-      const openRequest = indexedDB.open('jscangaceiro', 2);
+      const openRequest = indexedDB.open('stockexchange', 2);
 
       openRequest.onupgradeneeded = e => {
         ConnectionFactory._createStores(e.target.result);
