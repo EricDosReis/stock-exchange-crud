@@ -1,6 +1,6 @@
-import { HttpService } from '../../util/HttpService.js';
-import { ApplicationException } from '../../util/ApplicationException.js';
-import { Trading } from './Trading.js';
+import { HttpService } from '../../util/HttpService';
+import { ApplicationException } from '../../util/ApplicationException';
+import { Trading } from './Trading';
 
 export class TradingService {
   constructor() {
@@ -9,7 +9,7 @@ export class TradingService {
 
   getCurrentWeekTradings() {
     return this._http
-      .get('trading/currentWeek')
+      .get(`${API_URL}/trading/currentWeek`)
       .then(
         data => {
           const tradings = data.map(object =>
@@ -25,7 +25,7 @@ export class TradingService {
 
   getPreviousWeekTradings() {
     return this._http
-      .get('trading/previousWeek')
+      .get(`${API_URL}/trading/previousWeek`)
       .then(
         data =>
           data.map(object =>
@@ -39,7 +39,7 @@ export class TradingService {
 
   getDelayedWeekTradings() {
     return this._http
-      .get('trading/delayedWeek')
+      .get(`${ API_URL }/trading/delayedWeek`)
       .then(
         data => 
           data.map(object => 

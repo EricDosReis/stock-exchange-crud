@@ -1,4 +1,4 @@
-import { InvalidDateException } from './InvalidDateException.js';
+import { InvalidDateException } from './InvalidDateException';
 
 export class DateConverter {
   constructor() {

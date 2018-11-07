@@ -1,1 +1,0 @@
-{"version":3,"sources":["../app-src/app.js"],"names":["TradingController","controller"],"mappings":";;;;;;AAASA,uB,mCAAAA,iB;;;;AAET,YAAMC,aAAa,IAAID,iBAAJ,EAAnB","file":"app.js","sourcesContent":["import { TradingController } from './controllers/TradingController.js';\n\nconst controller = new TradingController();\n"]}

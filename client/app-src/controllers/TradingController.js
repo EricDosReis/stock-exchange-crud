@@ -1,11 +1,11 @@
-import { Tradings, TradingService, Trading } from '../domain/index.js';
+import { Tradings, Trading } from '../domain';
 
 import { 
   TradingsView, 
   MessageView, 
   Message, 
   DateConverter 
-} from '../ui/index.js';
+} from '../ui';
 
 import { 
   getTradingDao, 
@@ -14,7 +14,7 @@ import {
   debounce, 
   controller, 
   bindEvent,
-} from '../util/index.js';
+} from '../util';
 
 @controller('#date', '#amount', '#value')
 export class TradingController {
@@ -36,7 +36,6 @@ export class TradingController {
       'text',
     );
 
-    this._service = new TradingService();
     this._init();
   }
 
@@ -76,7 +75,10 @@ export class TradingController {
   @debounce(1500)
   async importTradings() {
     try {
-      const tradings = await this._service.getAllTradings();
+      const { TradingService } = await import('../domain/trading/TradingService');
+
+      const service = new TradingService;
+      const tradings = await service.getAllTradings();
 
       tradings
         .filter(newTrading => {
